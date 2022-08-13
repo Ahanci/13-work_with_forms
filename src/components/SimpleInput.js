@@ -13,7 +13,18 @@ const SimpleInput = (props) => {
   }, [enteredNameIsValid])
 
   const nameInputChangeHandler= (event)=>{    
-    setEnteredName(event.target.value.trim());
+    setEnteredName(event.target.value.trim()); //REACT SCHEDULES THIS AND IF YOU NEED UPDATED STATE YOU MUST WRITE IT AGAIN;
+    if(event.target.value.trim() !== ''){ // WRITE AGAIN BECAUSE REACT SCHEDULING
+      setEnteredNameIsValid(true);
+      return ;
+    }
+  }
+  const nameInputBlurHandler= ()=>{
+    setEnteredNameTouched(true);
+    if(enteredName === ''){
+      setEnteredNameIsValid(false);
+      return ;
+    }
   }
 
   const formSubmissionHandler = (e)=>{
@@ -42,6 +53,7 @@ const SimpleInput = (props) => {
         type='text' 
         id='name'
         onChange={ nameInputChangeHandler }
+        onBlur={nameInputBlurHandler}
         value={enteredName}/>
       </div>
       {nameInputIsValid && <p className='error-text' >Please type a name!!!</p>}
