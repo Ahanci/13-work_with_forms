@@ -2,46 +2,32 @@ import {useState, useEffect} from 'react';
 
 
 const SimpleInput = (props) => {
-  const [enteredName,setEnteredName]= useState(''); 
-  const [enteredNameIsValid, setEnteredNameIsValid]= useState(false);
+  const [enteredName,setEnteredName]= useState('');
   const [enteredNameTouched,setEnteredNameTouched]=useState(false);
 
-  useEffect(()=>{
-    if(enteredNameIsValid){
-      console.log('nam is valid');
-    }
-  }, [enteredNameIsValid])
+  const enteredNameIsValid= enteredName.trim() !== '';
+  const nameInputIsValid= !enteredNameIsValid && enteredNameTouched;
 
   const nameInputChangeHandler= (event)=>{    
     setEnteredName(event.target.value.trim()); //REACT SCHEDULES THIS AND IF YOU NEED UPDATED STATE YOU MUST WRITE IT AGAIN;
-    if(event.target.value.trim() !== ''){ // WRITE AGAIN BECAUSE REACT SCHEDULING
-      setEnteredNameIsValid(true);
-      return ;
-    }
+    
   }
   const nameInputBlurHandler= ()=>{
     setEnteredNameTouched(true);
-    if(enteredName === ''){
-      setEnteredNameIsValid(false);
-      return ;
-    }
+    
   }
 
   const formSubmissionHandler = (e)=>{
     e.preventDefault();
     setEnteredNameTouched(true);
-    if(enteredName === ''){
-      setEnteredNameIsValid(false);
-      return ;
+
+    if(!enteredNameIsValid){
+      return;
     }
-    console.log(enteredName); 
-    setEnteredNameIsValid(true);
     setEnteredName('');
+    setEnteredNameTouched(false);
 
   }
-
-  const nameInputIsValid= !enteredNameIsValid && enteredNameTouched;
-  console.log(nameInputIsValid);
 
   const nameInputClasses= nameInputIsValid ? 'form-control  invalid' : 'form-control';
 
